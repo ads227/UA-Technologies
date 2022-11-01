@@ -14,15 +14,20 @@ app = Flask(__name__)
 @app.route('/')
 
 def hello(name = None):
-    return render_template('hello.html', name = name)
+    return render_template('index.html', name = name)
 
-@app.route('/display', methods = ['POST'])
+@app.route('/display', methods = ['GET'])
 
 def data():
-    if request.method == 'POST':
+    if request.method == 'GET':
         conn = psycopg2.connect("host=localhost dbname=events user=ads227 password=admin")
         cur = conn.cursor()
         cur.execute("SELECT * FROM event;")
         contents = cur.fetchall()
         rows = len(contents)
         return render_template('display.html', content = contents, rows = rows)
+
+@app.route('/insert', methods = ['POST'])
+
+def insert():
+    print()

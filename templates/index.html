@@ -1,11 +1,10 @@
 <!doctype html>
+<title>UA Athletics</title>
 
-<table>
-{% for row in range(rows) %}
-<tr>
-    <td>{{content[row][0]}}</td>
-    <td>{{content[row][1]}}</td>
-    <td>{{content[row][2]}}</td>
-</tr>
-{% endfor %}
-</table>
+<form action="/display" method="POST">
+  <input type="submit" value="DISPLAY">
+</form>
+
+<form action="/insert" method="POST">
+  <input type="submit" value="INPUT">
+</form>
