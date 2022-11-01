@@ -16,16 +16,13 @@ app = Flask(__name__)
 def hello(name = None):
     return render_template('hello.html', name = name)
 
-@app.route('/post', methods = ['POST'])
+@app.route('/display', methods = ['POST'])
 
 def data():
     if request.method == 'POST':
-        print('POST')
-        form_data = request.form
         conn = psycopg2.connect("host=localhost dbname=events user=ads227 password=admin")
         cur = conn.cursor()
         cur.execute("SELECT * FROM event;")
-        content = cur.fetchall()
-
-        print(form_data["content"])
-        return render_template('index.html', content = content)
+        contents = cur.fetchall()
+        rows = len(contents)
+        return render_template('display.html', content = contents, rows = rows)
