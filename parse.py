@@ -470,3 +470,5 @@ def hello_world():
         else:
             conn.commit()
             print(str(departmentstring) + str(eventstring))
+
+hello_world()
