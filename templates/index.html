@@ -1,10 +1,12 @@
 <!doctype html>
 <title>UA Athletics</title>
-
-<form action="/display" method="POST">
+{% if success == True %}
+success
+{% endif %}
+<form action="/display" method="GET">
   <input type="submit" value="DISPLAY">
 </form>
 
-<form action="/insert" method="POST">
+<form action="/insert" method="GET">
   <input type="submit" value="INPUT">
 </form>

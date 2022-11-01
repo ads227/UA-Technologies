@@ -1,11 +1,28 @@
 <!doctype html>
 
 <table>
-{% for row in range(rows) %}
-<tr>
-    <td>{{content[row][0]}}</td>
-    <td>{{content[row][1]}}</td>
-    <td>{{content[row][2]}}</td>
-</tr>
-{% endfor %}
+    <tr>
+        <td>ID</td>
+        <td>Title</td>
+        <td>Category</td>
+        <td>Hours</td>
+        <td>Date</td>
+        <td>Facility</td>
+        <td>Area</td>
+        <td>Athletics Overhead</td>
+        <td>Rental Fee</td>
+    </tr>
+    {% for row in range(rows) %}
+    <tr>
+        <td>{{content[row][0]}}</td>
+        <td>{{content[row][1]}}</td>
+        <td>{{content[row][2]}}</td>
+        <td>{{content[row][3]}}</td>
+        <td>{{content[row][4]}}</td>
+        <td>{{content[row][5]}}</td>
+        <td>{{content[row][6]}}</td>
+        <td>{{content[row][7]}}</td>
+        <td>{{content[row][8]}}</td>
+    </tr>
+    {% endfor %}
 </table>

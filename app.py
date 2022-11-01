@@ -27,7 +27,26 @@ def data():
         rows = len(contents)
         return render_template('display.html', content = contents, rows = rows)
 
-@app.route('/insert', methods = ['POST'])
+@app.route('/insert', methods = ['GET'])
 
 def insert():
-    print()
+    return render_template('insert.html')
+
+@app.route('/append', methods = ['POST'])
+
+def append():
+    print(request.form["title"])
+    title = request.form['title']
+    category = request.form['category']
+    hours = request.form['hours']
+    date = request.form['date']
+    facility = request.form['facility']
+    area = request.form['area']
+    overhead = request.form['overhead']
+    fee = request.form['fee']
+
+    conn = psycopg2.connect("host=localhost dbname=events user=ads227 password=admin")
+    cur = conn.cursor()
+    cur.execute('INSERT INTO event( title,category,hours,date,facilityName,facilityArea,overhead,rentalFee) VALUES(%s, %s, %s, %s, %s, %s, %s, %s);', (title, category, hours, date, facility, area, overhead, fee))
+    conn.commit()
+    return render_template('index.html', success=True)
