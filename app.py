@@ -85,3 +85,34 @@ def updateSubmit():
     contents = cur.fetchall()
     rows = len(contents)
     return render_template('display.html', content = contents, rows = rows)
+
+@app.route('/delete', methods = ['POST'])
+
+def delete():
+    id = request.form.get('id')
+    print(id)
+    conn = psycopg2.connect("host=localhost dbname=events user=ads227 password=admin")
+    cur = conn.cursor()
+    cur.execute("DELETE FROM event where eventid = %s;", (str(id),))
+    conn.commit()
+    cur.execute("SELECT * FROM event;")
+    contents = cur.fetchall()
+    rows = len(contents)
+    return render_template('display.html', content = contents, rows = rows)
+
+@app.route('/search', methods = ['POST'])
+
+def search():
+    return render_template('search.html')
+
+@app.route('/searchresult', methods = ['POST'])
+
+def result():
+    title = request.form.get('title')
+    print(title)
+    conn = psycopg2.connect("host=localhost dbname=events user=ads227 password=admin")
+    cur = conn.cursor()
+    cur.execute("SELECT * FROM event WHERE title = %s;", (title,))
+    contents = cur.fetchall()
+    rows = len(contents)
+    return render_template('display.html', content = contents, rows = rows)

@@ -1,5 +1,5 @@
 <!doctype html>
-
+<a href="http://127.0.0.1:5000/">home</a>
 <table>
     <tr>
         <td>ID</td>
@@ -13,9 +13,9 @@
         <td>Rental Fee</td>
     </tr>
     {% for row in range(rows) %}
-    <form action="/update" method="POST">
+    <form>
         <tr>
-            <!--<td name="title">{{content[row][0]}}</td>-->
+            <td><input type="submit" value="DELETE" formaction = "/delete" formmethod="POST"></td>
             <td><input type="hidden" name="id" value="{{ content[row][0] }}"> {{ content[row][0] }}</td>
             <td><input type="hidden" name="title" value="{{ content[row][1] }}"> {{ content[row][1] }}</td>
             <td><input type="hidden" name="category" value="{{ content[row][2] }}"> {{ content[row][2] }}</td>
@@ -25,7 +25,7 @@
             <td><input type="hidden" name="area" value="{{ content[row][6] }}"> {{ content[row][6] }}</td>
             <td><input type="hidden" name="overhead" value="{{ content[row][7] }}"> {{ content[row][7] }}</td>
             <td><input type="hidden" name="fee" value="{{ content[row][8] }}"> {{ content[row][8] }}</td>
-            <td><input type="submit" value="EDIT" ></td>
+            <td><input type="submit" value="EDIT" formaction = "/update" formmethod="POST"></td>
         </tr>
     </form>
     {% endfor %}
