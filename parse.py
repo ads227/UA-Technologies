@@ -10,14 +10,65 @@ import psycopg2
 # data[3] is headers
 #data[496] is first real element
 #data[][28] last column
-def hello_world():
-    print("hello")
+def parse():
     with open("data.csv") as f:
         reader = csv.reader(f)
         data = list(reader)
 
     conn = psycopg2.connect("host=localhost dbname=events user=ads227 password=admin")
     cur = conn.cursor()
+
+    # Populate event table
+    for i in range(496, 818):
+        # Process overhead
+        tmp = data[i][11].strip(' $')
+        tmp2 = tmp.strip('\'')
+        data[i][11] = tmp2
+        tmp = data[i][11].replace(',', '')
+        data[i][11] = tmp
+        if data[i][11] == '-':
+            data[i][11] = 0
+
+        # Process rentalFee
+        tmp = data[i][6].strip(' $')
+        tmp2 = tmp.strip('\'')
+        data[i][6] = tmp2
+        tmp = data[i][6].replace(',', '')
+        data[i][6] = tmp
+        if data[i][6] == '-':
+            data[i][6] = 0
+
+        # Remove meaningless values
+        if data[i][1] != "#REF!" and data[i][4] != '':
+            cur.execute("INSERT INTO event(title, category, hours, date, facilityname, facilityarea, overhead, rentalfee) VALUES(%s, %s, %s, %s, %s, %s, %s, %s)", (data[i][0], data[i][3], data[i][4], data[i][5], data[i][1], data[i][2], data[i][11], data[i][6]))
+
+    for i in range(1116, 1800):
+        # Process overhead
+        tmp = data[i][11].strip(' $')
+        tmp2 = tmp.strip('\'')
+        data[i][11] = tmp2
+        tmp = data[i][11].replace(',', '')
+        data[i][11] = tmp
+        if data[i][11] == '-':
+            data[i][11] = 0
+
+        # Process rentalFee
+        tmp = data[i][6].strip(' $')
+        tmp2 = tmp.strip('\'')
+        data[i][6] = tmp2
+        tmp = data[i][6].replace(',', '')
+        data[i][6] = tmp
+        if data[i][6] == '-':
+            data[i][6] = 0
+
+        # Remove meaningless values
+        if data[i][1] != "#REF!" and data[i][4] != '':
+            cur.execute("INSERT INTO event(title, category, hours, date, facilityname, facilityarea, overhead, rentalfee) VALUES(%s, %s, %s, %s, %s, %s, %s, %s)", (data[i][0], data[i][3], data[i][4], data[i][5], data[i][1], data[i][2], data[i][11], data[i][6]))
+
+    # Populate department table
+    cur.execute("INSERT INTO department(department) VALUES('PFOC'), ('AthleticsMaintenance'), ('AthleticsCustodial'), ('Ushers'), ('Trainers'), ('Parking'), ('Police'), ('Sound/Video')")
+
+    conn.commit()
 
 
     # Populate eventStaffing
@@ -30,7 +81,6 @@ def hello_world():
             departmentstring =  cur.fetchone()
             title = data[i][0]
             newTitle = title.replace("'", "''")
-            print(newTitle)
             execString = "select eventid from event where date ='" + data[i][5] + "' and title = '" + newTitle + "';"
             cur.execute(execString)
             eventstring = cur.fetchone()
@@ -471,4 +521,4 @@ def hello_world():
             conn.commit()
             print(str(departmentstring) + str(eventstring))
 
-hello_world()
+parse()

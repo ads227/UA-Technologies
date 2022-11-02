@@ -6,7 +6,6 @@ from sqlite3 import Binary
 from flask import Flask
 from flask import render_template
 from flask import request
-import csv
 import psycopg2
 
 app = Flask(__name__)
