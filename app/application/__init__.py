@@ -1,0 +1,14 @@
+# DBM Term Project
+# UA-Technologies
+# Andrew Santa
+
+from flask import Flask
+
+def init_app():
+  print("fuck")
+  app = Flask(__name__, template_folder = "templates")
+
+  with app.app_context():
+    from . import routes
+    print(routes)
+    return app

@@ -1,0 +1,22 @@
+<!doctype html>
+<html>
+  <head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <meta charset="UTF-8">
+  </head>
+  <title>UA Athletics</title>
+  {% if success == True %}
+  success
+  {% endif %}
+  <form action="/display" method="GET">
+    <input type="submit" value="DISPLAY">
+  </form>
+
+  <form action="/insert" method="GET">
+    <input type="submit" value="INPUT">
+  </form>
+
+  <form action="/search" method="POST">
+    <input type="submit" value="SEARCH">
+  </form>
+</html>

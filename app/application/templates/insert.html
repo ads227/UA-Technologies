@@ -1,0 +1,26 @@
+<!doctype html>
+<html>
+  <head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <meta charset="UTF-8">
+  </head>
+  <a href="http://127.0.0.1:5000/">home</a>
+  Add event
+  <form action="/append" method = 'POST'>
+      Title<input type="text" name="title"><br><br>
+      Category<input type="text" name="category"><br><br>
+      Hours<input type="text" name="hours"><br><br>
+      Date<input type="text" name="date"><br><br>
+      Facility<input type="text" name="facility"><br><br>
+      Area<input type="text" name="area"><br><br>
+      Total Athletics Overhead<input type="text" name="overhead"><br><br>
+      Rental Fee<input type="text" name="fee"><br><br>
+      <input type="submit">
+  </form>
+  <br><br><br>
+  Add department
+  <form action="/insert" method = 'POST'>
+      Department Name<input type="text">
+      <input type="submit">
+  </form>
+</html>
