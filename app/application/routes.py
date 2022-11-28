@@ -38,16 +38,16 @@ def authorized():
 @app.route('/display', methods = ['GET'])
 def data():
 
-    token = _get_token_from_cache(app_config.SCOPE)
-    if not token:
-        return redirect(url_for("login"))
-    graph_data = requests.get(  # Use token to call downstream service
-        app_config.ENDPOINT,
-        headers={'Authorization': 'Bearer ' + token['access_token']},
-        ).json()
-    print(token)
-    print("-----------------------------")
-    print(graph_data)
+    #token = _get_token_from_cache(app_config.SCOPE)
+    #if not token:
+    #    return redirect(url_for("login"))
+    #graph_data = requests.get(  # Use token to call downstream service
+    #    app_config.ENDPOINT,
+    #    headers={'Authorization': 'Bearer ' + token['access_token']},
+    #    ).json()
+    #print(token)
+    #print("-----------------------------")
+    #print(graph_data)
     if request.method == 'GET':
         conn = psycopg2.connect("host=localhost dbname=events user=ads227 password=admin")
         cur = conn.cursor()
