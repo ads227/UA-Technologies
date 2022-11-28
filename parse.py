@@ -132,7 +132,7 @@ def parse():
             print("i is %s AthleticsCustodial", str(i))
             if data[i][5] == '#REF!' or data[i][5] == '':
                 continue
-            cur.execute("select departmentid from department where department = 'AthleticsCustodial;")
+            cur.execute("select departmentid from department where department = 'AthleticsCustodial';")
             departmentstring =  cur.fetchone()
             title = data[i][0]
             newTitle = title.replace("'", "''")
