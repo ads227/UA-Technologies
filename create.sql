@@ -29,6 +29,7 @@ create table eventstaffing (
 );
 
 alter table eventStaffing
-    alter column constraint dep_fk foreign key(departmentid) references department(departmentid) on delete cascade;
-alter table eventStaffing
-    alter column constraint ev_fk foreign key(eventid) references event(eventid) on delete cascade
+    drop constraint dep_fk,
+    add constraint dep_fk foreign key(departmentid) references department(departmentid) on delete cascade,
+    drop constraint ev_fk,
+    add constraint ev_fk foreign key(eventid) references event(eventid)on delete cascade;
