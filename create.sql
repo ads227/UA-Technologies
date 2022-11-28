@@ -12,7 +12,7 @@ create table event (
 );
 
 create table department (
-    departmentid GENERATED ALWAYS AS IDENTITY,
+    departmentid int GENERATED ALWAYS AS IDENTITY,
     department text,
     ytdearnings real,
     primary key(departmentid)
