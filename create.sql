@@ -25,5 +25,5 @@ create table eventstaffing (
     earnings real,
     primary key(departmentid, eventid),
     constraint dep_fk foreign key(departmentid) references department(departmentid),
-    ev_fk foreign key(eventid) references event(eventid)
+    constraint ev_fk foreign key(eventid) references event(eventid)
 );
