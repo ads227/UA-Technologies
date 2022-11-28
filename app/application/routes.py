@@ -145,10 +145,10 @@ def result():
 @app.route("/logout")
 def logout():
   session["user"] = None  # Log out from this app from its session
-  # session.clear()  # If you prefer, this would nuke the user's token cache too
+  session.clear()  # If you prefer, this would nuke the user's token cache too
   return redirect(  # Also need to logout from Microsoft Identity platform
     "https://login.microsoftonline.com/common/oauth2/v2.0/logout"
-    "?post_logout_redirect_uri=" + url_for("/", _external=True))
+    "?post_logout_redirect_uri=" + url_for("hello", _external=True))
 
 def _load_cache():
   cache = msal.SerializableTokenCache()
