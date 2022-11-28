@@ -20,37 +20,34 @@ def hello():
 
 @app.route("/login")
 def login():
-  print("login")
-  session["state"] = str(uuid.uuid4())
-  print("login2")
-  auth_url = _build_msal_app().get_authorization_request_url(
-      app_config.SCOPE,  # Technically we can use empty list [] to just sign in,
-                          # here we choose to also collect end user consent upfront
-      state=session["state"],
-      redirect_uri=url_for("authorized", _external=True))
-  print(url_for("authorized", _external=True))
-
-  return "<a href='%s'>Login with Microsoft Identity</a>" % auth_url
+  session["flow"] = _build_auth_code_flow(scopes=app_config.SCOPE)
+  return render_template("login.html", auth_url=session["flow"]["auth_uri"], version=msal.__version__)
 
 @app.route("/getAToken")  # Its absolute URL must match your app's redirect_uri set in AAD
 def authorized():
-  print("getAToken")
-  if request.args['state'] != session.get("state"):
-    return redirect(url_for("login"))
   cache = _load_cache()
-  result = _build_msal_app(cache).acquire_token_by_authorization_code(
-    request.args['code'],
-    scopes=app_config.SCOPE,  # Misspelled scope would cause an HTTP 400 error here
-    redirect_uri=url_for("authorized", _external=True))
-  if "error" in result:
-    return "Login failure: %s, %s" % (
-        result["error"], result.get("error_description"))
+  print(session.get("flow", {}))
+  print('**************************')
+  result = _build_msal_app(cache=cache).acquire_token_by_auth_code_flow(
+      session.get("flow", {}), request.args)
+  print(result)
   session["user"] = result.get("id_token_claims")
   _save_cache(cache)
   return redirect(url_for("hello"))
 
 @app.route('/display', methods = ['GET'])
 def data():
+
+    token = _get_token_from_cache(app_config.SCOPE)
+    if not token:
+        return redirect(url_for("login"))
+    graph_data = requests.get(  # Use token to call downstream service
+        app_config.ENDPOINT,
+        headers={'Authorization': 'Bearer ' + token['access_token']},
+        ).json()
+    print(token)
+    print("-----------------------------")
+    print(graph_data)
     if request.method == 'GET':
         conn = psycopg2.connect("host=localhost dbname=events user=ads227 password=admin")
         cur = conn.cursor()
@@ -65,7 +62,6 @@ def insert():
 
 @app.route('/append', methods = ['POST'])
 def append():
-    print(request.form["title"])
     title = request.form['title']
     category = request.form['category']
     hours = request.form['hours']
@@ -79,6 +75,7 @@ def append():
     cur = conn.cursor()
     cur.execute('INSERT INTO event( title,category,hours,date,facilityName,facilityArea,overhead,rentalFee) VALUES(%s, %s, %s, %s, %s, %s, %s, %s);', (title, category, hours, date, facility, area, overhead, fee))
     conn.commit()
+
     return render_template('index.html', success=True)
 
 @app.route('/update', methods = ['POST'])
@@ -144,10 +141,9 @@ def result():
 
 @app.route("/logout")
 def logout():
-  session["user"] = None  # Log out from this app from its session
-  session.clear()  # If you prefer, this would nuke the user's token cache too
-  return redirect(  # Also need to logout from Microsoft Identity platform
-    "https://login.microsoftonline.com/common/oauth2/v2.0/logout"
+  session.clear()  # Wipe out user and its token cache from session
+  return redirect(  # Also logout from your tenant's web session
+    app_config.AUTHORITY + "/oauth2/v2.0/logout" +
     "?post_logout_redirect_uri=" + url_for("hello", _external=True))
 
 def _load_cache():
@@ -160,10 +156,15 @@ def _save_cache(cache):
   if cache.has_state_changed:
     session["token_cache"] = cache.serialize()
 
-def _build_msal_app(cache=None):
+def _build_msal_app(cache=None, authority=None):
   return msal.ConfidentialClientApplication(
     app_config.CLIENT_ID, authority=app_config.AUTHORITY,
     client_credential=app_config.CLIENT_SECRET, token_cache=cache)
+
+def _build_auth_code_flow(authority=None, scopes=None):
+  return _build_msal_app(authority=authority).initiate_auth_code_flow(
+    scopes,
+    redirect_uri=url_for("authorized", _external=True))
 
 def _get_token_from_cache(scope=None):
   cache = _load_cache()  # This web app maintains one cache per session
@@ -173,3 +174,6 @@ def _get_token_from_cache(scope=None):
     result = cca.acquire_token_silent(scope, account=accounts[0])
     _save_cache(cache)
     return result
+
+
+app.jinja_env.globals.update(_build_auth_code_flow=_build_auth_code_flow)  # Used in template
