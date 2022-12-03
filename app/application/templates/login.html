@@ -4,13 +4,7 @@
     <meta charset="UTF-8">
 </head>
 <body>
-    <h1>Microsoft Identity Python Web App</h1>
-
-    <li><a href='{{ auth_url }}'>Sign In</a></li>
-
-    {% if config.get("B2C_RESET_PASSWORD_AUTHORITY") %}
-    <li><a href='{{_build_auth_code_flow(authority=config["B2C_RESET_PASSWORD_AUTHORITY"])["auth_uri"]}}'>Reset Password</a></li>
-    {% endif %}
+    <li id="signin"><a href='{{ auth_url }}'>Sign In With your Microsoft Account</a></li>
 
     <hr>
     <footer style="text-align: right">Powered by MSAL Python {{ version }}</footer>

@@ -8,10 +8,19 @@
   Add event
   <form action="/append" method = 'POST'>
       Title<input type="text" name="title"><br><br>
-      Category<input type="text" name="category"><br><br>
+      Category<br>
+      <input type="radio" name="category" value="NON">Non-University
+      <input type="radio" name="category" value="UA">University
+      <input type="radio" name="category"  value="CAMP">Camp
+      <input type="radio" name="category" value="ZIPS">Zips
+      <input type="radio" name="category"  value="MAC">MAC Challenge<br><br>
       Hours<input type="text" name="hours"><br><br>
-      Date<input type="text" name="date"><br><br>
-      Facility<input type="text" name="facility"><br><br>
+      Date<input type="text" name="date">Month/Day/Year ex. 12/2/2022<br><br>
+      Facility<br>
+      <input type="radio" name="facility" value="FH">Fieldhouse
+      <input type="radio" name="facility" value="STAD">Stadium
+      <input type="radio" name="facility"  value="JAR">James A. Rhodes Arena
+      <input type="radio" name="facility" value="OUT">Outdoors<br><br>
       Area<input type="text" name="area"><br><br>
       Total Athletics Overhead<input type="text" name="overhead"><br><br>
       Rental Fee<input type="text" name="fee"><br><br>

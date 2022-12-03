@@ -7,6 +7,7 @@ import requests
 import msal
 from flask_session import Session
 from . import app_config
+import json
 
 app.config.from_object(app_config)
 Session(app)
@@ -26,8 +27,6 @@ def login():
 @app.route("/getAToken")  # Its absolute URL must match your app's redirect_uri set in AAD
 def authorized():
   cache = _load_cache()
-  print(session.get("flow", {}))
-  print('**************************')
   result = _build_msal_app(cache=cache).acquire_token_by_auth_code_flow(
       session.get("flow", {}), request.args)
   print(result)
@@ -37,17 +36,6 @@ def authorized():
 
 @app.route('/display', methods = ['GET'])
 def data():
-
-    #token = _get_token_from_cache(app_config.SCOPE)
-    #if not token:
-    #    return redirect(url_for("login"))
-    #graph_data = requests.get(  # Use token to call downstream service
-    #    app_config.ENDPOINT,
-    #    headers={'Authorization': 'Bearer ' + token['access_token']},
-    #    ).json()
-    #print(token)
-    #print("-----------------------------")
-    #print(graph_data)
     if request.method == 'GET':
         conn = psycopg2.connect("host=localhost dbname=events user=ads227 password=admin")
         cur = conn.cursor()
@@ -66,11 +54,40 @@ def append():
     category = request.form['category']
     hours = request.form['hours']
     date = request.form['date']
+    month, day, year = date.split("/")
+    microsoftDateTime = year + "-" + month + "-" + day + "T12:00:00"
     facility = request.form['facility']
     area = request.form['area']
     overhead = request.form['overhead']
     fee = request.form['fee']
-
+    token = _get_token_from_cache(app_config.SCOPE)
+    if not token:
+        return redirect(url_for("login"))
+    content = {
+    "subject": title,
+    "body": {
+        "contentType": "HTML",
+        "content": ""
+    },
+    "start": {
+        "dateTime": microsoftDateTime,
+        "timeZone": "Eastern Standard Time"
+    },
+    "end": {
+        "dateTime": microsoftDateTime,
+        "timeZone": "Eastern Standard Time"
+    },
+    "location": {
+        "displayName": facility + " - " + area
+    },
+    }
+    body = json.dumps(content)
+    graph_data = requests.post(  # Use token to call downstream service
+        app_config.ENDPOINT,
+        body,
+        headers={'Authorization': 'Bearer ' + token['access_token'], 'Content-Type': 'application/json'},
+        ).json()
+    print(graph_data)
     conn = psycopg2.connect("host=localhost dbname=events user=ads227 password=admin")
     cur = conn.cursor()
     cur.execute('INSERT INTO event( title,category,hours,date,facilityName,facilityArea,overhead,rentalFee) VALUES(%s, %s, %s, %s, %s, %s, %s, %s);', (title, category, hours, date, facility, area, overhead, fee))
