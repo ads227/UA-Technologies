@@ -1,39 +1,69 @@
 <!doctype html>
 <html>
+
   <head>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <meta charset="UTF-8">
   </head>
-  <a href= "{{ url_for('hello') }}">home</a>
-  <table>
-      <tr>
-        <th></th>
-          <th>ID</th>
-          <th>Title</th>
-          <th>Category</th>
-          <th>Hours</th>
-          <th>Date</th>
-          <th>Facility</th>
-          <th>Area</th>
-          <th>Athletics Overhead</th>
-          <th>Rental Fee</th>
-      </tr>
-      {% for row in range(rows) %}
-      <form>
-          <tr>
-              <td><input type="submit" value="DELETE" formaction = "/delete" formmethod="POST"></td>
-              <td><input type="hidden" name="id" value="{{ content[row][0] }}"> {{ content[row][0] }}</td>
-              <td><input type="hidden" name="title" value="{{ content[row][1] }}"> {{ content[row][1] }}</td>
-              <td><input type="hidden" name="category" value="{{ content[row][2] }}"> {{ content[row][2] }}</td>
-              <td><input type="hidden" name="hours" value="{{ content[row][3] }}"> {{ content[row][3] }}</td>
-              <td><input type="hidden" name="date" value="{{ content[row][4] }}"> {{ content[row][4] }}</td>
-              <td><input type="hidden" name="facility" value="{{ content[row][5] }}"> {{ content[row][5] }}</td>
-              <td><input type="hidden" name="area" value="{{ content[row][6] }}"> {{ content[row][6] }}</td>
-              <td><input type="hidden" name="overhead" value="{{ content[row][7] }}"> {{ content[row][7] }}</td>
-              <td><input type="hidden" name="fee" value="{{ content[row][8] }}"> {{ content[row][8] }}</td>
-              <td><input type="submit" value="EDIT" formaction = "/update" formmethod="POST"></td>
-          </tr>
-      </form>
-      {% endfor %}
-  </table>
+
+  <header>
+    University of Akron Athletics Events
+  </header>
+
+  <form action ="/" class = "idxForm">
+    <input type="submit" value="HOME" class="idxSubmit">
+  </form>
+
+  <form action="/display" method="GET" class="idxForm">
+      <input type="submit" value="DISPLAY" class="idxSubmit">
+      <p class="idxLabel">Display all events.</p>
+  </form>
+
+  <form action="/insert" method="GET" class="idxForm">
+    <input type="submit" value="INPUT" class="idxSubmit">
+    <p class="idxLabel">Add an event and mirror it to your Outlook calendar.</p>
+  </form>
+
+  <form action="/search" method="POST" class="idxForm">
+    <input type="submit" value="SEARCH" class="idxSubmit">
+    <p class="idxLabel">Search for an event.</p>
+  </form>
+
+  <form action="/logout" class="idxForm">
+    <input type="submit" value="LOGOUT" class="idxSubmit">
+  </form>
+
+  <body>
+    <table id="display">
+        <tr>
+          <th></th>
+            <th>ID</th>
+            <th>Title</th>
+            <th>Category</th>
+            <th>Hours</th>
+            <th>Date</th>
+            <th>Facility</th>
+            <th>Area</th>
+            <th>Athletics Overhead</th>
+            <th>Rental Fee</th>
+        </tr>
+        {% for row in range(rows) %}
+        <form>
+            <tr>
+                <td><input type="submit" value="DELETE" formaction = "/delete" formmethod="POST"></td>
+                <td><input type="hidden" name="id" value="{{ content[row][0] }}"> {{ content[row][0] }}</td>
+                <td><input type="hidden" name="title" value="{{ content[row][1] }}"> {{ content[row][1] }}</td>
+                <td><input type="hidden" name="category" value="{{ content[row][2] }}"> {{ content[row][2] }}</td>
+                <td><input type="hidden" name="hours" value="{{ content[row][3] }}"> {{ content[row][3] }}</td>
+                <td><input type="hidden" name="date" value="{{ content[row][4] }}"> {{ content[row][4] }}</td>
+                <td><input type="hidden" name="facility" value="{{ content[row][5] }}"> {{ content[row][5] }}</td>
+                <td><input type="hidden" name="area" value="{{ content[row][6] }}"> {{ content[row][6] }}</td>
+                <td><input type="hidden" name="overhead" value="{{ content[row][7] }}"> {{ content[row][7] }}</td>
+                <td><input type="hidden" name="fee" value="{{ content[row][8] }}"> {{ content[row][8] }}</td>
+                <td><input type="submit" value="EDIT" formaction = "/update" formmethod="POST"></td>
+            </tr>
+        </form>
+        {% endfor %}
+    </table>
+</body>
 </html>

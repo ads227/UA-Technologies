@@ -1,35 +1,78 @@
 <!doctype html>
 <html>
+
   <head>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <meta charset="UTF-8">
   </head>
-  <a href="{{ url_for('hello') }}">home</a>
-  Add event
-  <form action="/append" method = 'POST'>
-      Title<input type="text" name="title"><br><br>
-      Category<br>
-      <input type="radio" name="category" value="NON">Non-University
-      <input type="radio" name="category" value="UA">University
-      <input type="radio" name="category"  value="CAMP">Camp
-      <input type="radio" name="category" value="ZIPS">Zips
-      <input type="radio" name="category"  value="MAC">MAC Challenge<br><br>
-      Hours<input type="text" name="hours"><br><br>
-      Date<input type="text" name="date">Month/Day/Year ex. 12/2/2022<br><br>
-      Facility<br>
-      <input type="radio" name="facility" value="FH">Fieldhouse
-      <input type="radio" name="facility" value="STAD">Stadium
-      <input type="radio" name="facility"  value="JAR">James A. Rhodes Arena
-      <input type="radio" name="facility" value="OUT">Outdoors<br><br>
-      Area<input type="text" name="area"><br><br>
-      Total Athletics Overhead<input type="text" name="overhead"><br><br>
-      Rental Fee<input type="text" name="fee"><br><br>
-      <input type="submit">
+
+  <header>
+    University of Akron Athletics Events
+  </header>
+
+  <form action ="/" class = "idxForm">
+    <input type="submit" value="HOME" class="idxSubmit">
   </form>
-  <br><br><br>
-  Add department
-  <form action="/insert" method = 'POST'>
-      Department Name<input type="text">
+
+  <form action="/display" method="GET" class="idxForm">
+      <input type="submit" value="DISPLAY" class="idxSubmit">
+      <p class="idxLabel">Display all events.</p>
+  </form>
+
+  <form action="/insert" method="GET" class="idxForm">
+    <input type="submit" value="INPUT" class="idxSubmit">
+    <p class="idxLabel">Add an event and mirror it to your Outlook calendar.</p>
+  </form>
+
+  <form action="/search" method="POST" class="idxForm">
+    <input type="submit" value="SEARCH" class="idxSubmit">
+    <p class="idxLabel">Search for an event.</p>
+  </form>
+
+  <form action="/logout" class="idxForm">
+    <input type="submit" value="LOGOUT" class="idxSubmit">
+  </form>
+
+
+  <form action="/append" method = 'POST' class="input" id="evt">
+    <label for="evt"> Add an event. </label><br><br>
+    <label for="title"> Title: </label>
+    <input type="text" name="title"><br><br>
+
+    <label for="category"> Category: </label>
+    <input type="radio" name="category" value="NON">Non-University
+    <input type="radio" name="category" value="UA">University
+    <input type="radio" name="category"  value="CAMP">Camp
+    <input type="radio" name="category" value="ZIPS">Zips
+    <input type="radio" name="category"  value="MAC">MAC Challenge<br><br>
+
+    <label for="hours"> Hours: </label>
+    <input type="text" name="hours"><br><br>
+
+    <label for="date"> Date: </label>
+    <input type="text" name="date"> Month/Day/Year ex. 12/2/2022<br><br>
+
+    <label for="facility"> Category: </label>
+    <input type="radio" name="facility" value="FH">Fieldhouse
+    <input type="radio" name="facility" value="STAD">Stadium
+    <input type="radio" name="facility"  value="JAR">James A. Rhodes Arena
+    <input type="radio" name="facility" value="OUT">Outdoors<br><br>
+
+    <label for="area"> Area: </label>
+    <input type="text" name="area"><br><br>
+
+    <label for="overhead"> Total Athletics Overhead: </label>
+    <input type="text" name="overhead"><br><br>
+
+    <label for="fee"> Rental Fee: </label>
+    <input type="text" name="fee"><br><br>
+
+    <input type="submit">
+  </form>
+  <form action="/insert" method = 'POST' class="input" id="dep">
+    <label for="dep"> Add a Department. </label><br><br>
+    <label for="dep"> Department Name: </label>
+      <input type="text" id="dep"><br>
       <input type="submit">
   </form>
 </html>

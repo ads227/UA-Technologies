@@ -2,11 +2,16 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <title>Log-in required</title>
 </head>
+<header>
+  University of Akron Athletics Events
+</header>
 <body>
-    <li id="signin"><a href='{{ auth_url }}'>Sign In With your Microsoft Account</a></li>
-
-    <hr>
-    <footer style="text-align: right">Powered by MSAL Python {{ version }}</footer>
+  <p id="error">
+    You must log in to access this resource.
+  </p>
+  <a href='{{ auth_url }}' id="signin">Sign In With your Microsoft Account</a>
 </body>
 </html>
