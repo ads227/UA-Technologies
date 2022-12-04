@@ -16,10 +16,13 @@ Session(app)
 # Index
 @app.route("/")
 def hello():
-  print("hello")
   if not session.get("user"):
     return redirect(url_for("login"))
-  return render_template('index.html', user=session["user"])
+  conn = psycopg2.connect("host=localhost dbname=events user=ads227 password=admin")
+  cur = conn.cursor()
+  cur.execute("SELECT ytdearnings FROM department WHERE department='Athletics';")
+  content = cur.fetchone()[0]
+  return render_template('index.html', user=session["user"], profit=content)
 
 # Loads if not logged in; provides login link for Microsoft account
 @app.route("/login")
@@ -52,7 +55,7 @@ def data():
 def insert():
   conn = psycopg2.connect("host=localhost dbname=events user=ads227 password=admin")
   cur = conn.cursor()
-  cur.execute("SELECT * FROM department;")
+  cur.execute("SELECT * FROM department WHERE department != 'Athletics';")
   contents = cur.fetchall()
   departments = len(contents)
   return render_template('insert.html', departments=contents, rows=departments)
@@ -66,7 +69,6 @@ def append():
   hours = request.form['hours']
   facility = request.form['facility']
   area = request.form['area']
-  overhead = request.form['overhead']
   fee = request.form['fee']
   PFOC = request.form.get('PFOC', 0)
   athleticsMaintenance = request.form.get('AthleticsMaintenance', 0)
@@ -121,7 +123,7 @@ def append():
   # Insert event into database
   conn = psycopg2.connect("host=localhost dbname=events user=ads227 password=admin")
   cur = conn.cursor()
-  cur.execute('INSERT INTO event( title,category,hours,date,facilityName,facilityArea,overhead,rentalFee) VALUES(%s, %s, %s, %s, %s, %s, %s, %s);', (title, category, hours, date, facility, area, overhead, fee))
+  cur.execute('INSERT INTO event( title,category,hours,date,facilityName,facilityArea,rentalFee) VALUES(%s, %s, %s, %s, %s, %s, %s);', (title, category, hours, date, facility, area, fee))
   conn.commit()
 
   # Insert into eventstaffing intersection table
@@ -129,6 +131,18 @@ def append():
   cur.execute("SELECT eventid FROM event WHERE title='" + title +"' AND date='" + date + "';")
   eventid = int(cur.fetchone()[0])
 
+  # Special case, Athletics always involved
+  cur.execute("SELECT departmentid FROM department WHERE department='Athletics';")
+  departmentid = str(cur.fetchone()[0])
+  cur.execute("SELECT rentalFee FROM event WHERE title='" + title +"' AND date='" + date + "';")
+  fee = cur.fetchone()[0]
+
+  profit = fee - PFOC - float(athleticsMaintenance) - float(athleticsCustodial) - float(ushers) - float(trainers) - float(parking) - float(police) - float(sv)
+  cur.execute('INSERT INTO eventstaffing(departmentid, eventid, earnings) VALUES(%s, %s, %s);', (departmentid, eventid, profit))
+  conn.commit()
+  if int(year) == 2022:
+      cur.execute('UPDATE department SET ytdearnings = ytdearnings + ' + str(profit) + 'WHERE departmentid = ' + departmentid +';')
+      conn.commit()
 
 
   # Insert each valid department-event intersection. A 0 value indicates that department had no involvement/revenue.
@@ -199,7 +213,7 @@ def append():
     if int(year) == 2022:
       cur.execute('UPDATE department SET ytdearnings = ytdearnings + ' + str(sv) + 'WHERE departmentid = ' + departmentid +';')
       conn.commit()
-  return render_template('index.html', success=True)
+  return hello()
 
 # Render update event page
 @app.route('/update', methods = ['POST'])
@@ -211,10 +225,9 @@ def update():
   date = request.form.get('date')
   facility = request.form.get('facility')
   area = request.form.get('area')
-  overhead = request.form.get('overhead')
   fee = request.form.get('fee')
   return render_template('update.html', title = title, category = category, hours = hours, date = date,
-    facility = facility, area = area, overhead = overhead, fee = fee, id=id)
+    facility = facility, area = area, fee = fee, id=id)
 
 # Perform event update
 @app.route('/updateSubmit', methods = ['POST'])
@@ -226,13 +239,12 @@ def updateSubmit():
   date = request.form.get('date')
   facility = request.form.get('facility')
   area = request.form.get('area')
-  overhead = request.form.get('overhead')
   fee = request.form.get('fee')
 
   conn = psycopg2.connect("host=localhost dbname=events user=ads227 password=admin")
   cur = conn.cursor()
-  cur.execute("UPDATE event SET title = %s, category = %s, hours = %s, date = %s, facilityname = %s, facilityarea = %s, overhead = %s, rentalfee = %s where eventid = %s;",
-   (title, category, hours, date, facility, area, overhead, fee, id))
+  cur.execute("UPDATE event SET title = %s, category = %s, hours = %s, date = %s, facilityname = %s, facilityarea = %s, rentalfee = %s where eventid = %s;",
+   (title, category, hours, date, facility, area, fee, id))
   conn.commit()
   cur.execute("SELECT * FROM event;")
   contents = cur.fetchall()

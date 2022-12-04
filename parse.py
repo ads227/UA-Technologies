@@ -40,7 +40,7 @@ def parse():
 
         # Remove meaningless values
         if data[i][1] != "#REF!" and data[i][4] != '':
-            cur.execute("INSERT INTO event(title, category, hours, date, facilityname, facilityarea, overhead, rentalfee) VALUES(%s, %s, %s, %s, %s, %s, %s, %s)", (data[i][0], data[i][3], data[i][4], data[i][5], data[i][1], data[i][2], data[i][11], data[i][6]))
+            cur.execute("INSERT INTO event(title, category, hours, date, facilityname, facilityarea, rentalfee) VALUES(%s, %s, %s, %s, %s, %s, %s)", (data[i][0], data[i][3], data[i][4], data[i][5], data[i][1], data[i][2], data[i][6]))
 
     for i in range(1116, 1800):
         # Process overhead
@@ -63,7 +63,7 @@ def parse():
 
         # Remove meaningless values
         if data[i][1] != "#REF!" and data[i][4] != '':
-            cur.execute("INSERT INTO event(title, category, hours, date, facilityname, facilityarea, overhead, rentalfee) VALUES(%s, %s, %s, %s, %s, %s, %s, %s)", (data[i][0], data[i][3], data[i][4], data[i][5], data[i][1], data[i][2], data[i][11], data[i][6]))
+            cur.execute("INSERT INTO event(title, category, hours, date, facilityname, facilityarea, rentalfee) VALUES(%s, %s, %s, %s, %s, %s, %s)", (data[i][0], data[i][3], data[i][4], data[i][5], data[i][1], data[i][2], data[i][6]))
 
     # Populate department table
     cur.execute("INSERT INTO department(department) VALUES('PFOC'), ('AthleticsMaintenance'), ('AthleticsCustodial'), ('Ushers'), ('Trainers'), ('Parking'), ('Police'), ('Sound/Video'), ('Athletics')")
