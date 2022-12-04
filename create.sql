@@ -6,7 +6,6 @@ create table event (
     date date,
     facilityName text,
     facilityArea text,
-    overhead real,
     rentalFee real,
     primary key(eventid)
 );
