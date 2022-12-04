@@ -63,7 +63,6 @@ def insert():
 # Perform event insert
 @app.route('/append', methods = ['POST'])
 def append():
-
   title = request.form['title']
   category = request.form['category']
   hours = request.form['hours']

@@ -115,3 +115,16 @@ label {
 input[type=text]:focus {
   border: 2px;
 }
+
+#profit {
+  display: block;
+  text-align: center;
+  height: 10vh;
+  width: 10vw;
+  margin: 40vh 40vw 2vh;
+  padding: 2% 2% 2%;
+  border: solid;
+  color:#041e42;
+  background-color: #ae9c6e;
+  font-weight: bolder;
+}
