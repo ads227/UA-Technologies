@@ -6,7 +6,6 @@ create table event (
     date date,
     facilityName text,
     facilityArea text,
-    overhead real,
     rentalFee real,
     primary key(eventid)
 );
@@ -27,3 +26,9 @@ create table eventstaffing (
     constraint dep_fk foreign key(departmentid) references department(departmentid),
     constraint ev_fk foreign key(eventid) references event(eventid)
 );
+
+alter table eventStaffing
+    drop constraint dep_fk,
+    add constraint dep_fk foreign key(departmentid) references department(departmentid) on delete cascade,
+    drop constraint ev_fk,
+    add constraint ev_fk foreign key(eventid) references event(eventid)on delete cascade;
