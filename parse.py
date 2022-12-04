@@ -66,7 +66,7 @@ def parse():
             cur.execute("INSERT INTO event(title, category, hours, date, facilityname, facilityarea, overhead, rentalfee) VALUES(%s, %s, %s, %s, %s, %s, %s, %s)", (data[i][0], data[i][3], data[i][4], data[i][5], data[i][1], data[i][2], data[i][11], data[i][6]))
 
     # Populate department table
-    cur.execute("INSERT INTO department(department) VALUES('PFOC'), ('AthleticsMaintenance'), ('AthleticsCustodial'), ('Ushers'), ('Trainers'), ('Parking'), ('Police'), ('Sound/Video')")
+    cur.execute("INSERT INTO department(department) VALUES('PFOC'), ('AthleticsMaintenance'), ('AthleticsCustodial'), ('Ushers'), ('Trainers'), ('Parking'), ('Police'), ('Sound/Video'), ('Athletics')")
 
     conn.commit()
 

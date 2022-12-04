@@ -4,6 +4,8 @@
   <head>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <meta charset="UTF-8">
+    <title>Add Event</title>
+    <script src="{{ url_for('static', filename='scripts/addDep.js') }}"></script>
   </head>
 
   <header>
@@ -29,12 +31,17 @@
     <p class="idxLabel">Search for an event.</p>
   </form>
 
+  <form action ="/department" class = "idxForm">
+    <input type="submit" value="DEPARTMENTS" class="idxSubmit">
+    <p class="idxLabel">Display all departments.</p>
+  </form>
+
   <form action="/logout" class="idxForm">
     <input type="submit" value="LOGOUT" class="idxSubmit">
   </form>
 
 
-  <form action="/append" method = 'POST' class="input" id="evt">
+  <form method = 'POST' action="/append" class="input" id="evt">
     <label for="evt"> Add an event. </label><br><br>
     <label for="title"> Title: </label>
     <input type="text" name="title"><br><br>
@@ -67,12 +74,19 @@
     <label for="fee"> Rental Fee: </label>
     <input type="text" name="fee"><br><br>
 
+    <select id="sel">
+      {% for row in range(rows) %}
+        <option value="{{ departments[row][1] }}">{{ departments[row][1] }}</option>
+      {% endfor %}
+    </select><button type="button" onclick="addDep()">Add department</button><br><br>
+    <div id="deps">
+
+    </div>
     <input type="submit">
   </form>
-  <form action="/insert" method = 'POST' class="input" id="dep">
-    <label for="dep"> Add a Department. </label><br><br>
-    <label for="dep"> Department Name: </label>
-      <input type="text" id="dep"><br>
-      <input type="submit">
-  </form>
+
+  <footer>
+    University of Akron Athletics Events ~ Andrew Santa ~ ads227@uakron.edu
+  </footer>
+
 </html>

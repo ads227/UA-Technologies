@@ -3,17 +3,77 @@
   <head>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <meta charset="UTF-8">
+    <title>Update Event</title>
   </head>
-  <form action="/updateSubmit" method='POST'>
-      <input name="id" type="hidden" value="{{ id }}">
-      Title: <input name="title" type="text" value="{{ title }}">
-      Category: <input name="category" type="text" value="{{ category }}">
-      Hours: <input name="hours" type="text" value="{{ hours }}">
-      Date: <input name="date" type="text" value="{{ date }}">
-      Facility: <input name="facility" type="text" value="{{ facility }}">
-      Area: <input name="area" type="text" value="{{ area }}">
-      Overhead: <input name="overhead" type="text" value="{{ overhead }}">
-      Rental Fee: <input name="fee" type="text" value="{{ fee }}">
-      <input type="submit">
+
+  <header>
+    University of Akron Athletics Events
+  </header>
+
+  <form action ="/" class = "idxForm">
+    <input type="submit" value="HOME" class="idxSubmit">
   </form>
+
+  <form action="/display" method="GET" class="idxForm">
+      <input type="submit" value="DISPLAY" class="idxSubmit">
+      <p class="idxLabel">Display all events.</p>
+  </form>
+
+  <form action="/insert" method="GET" class="idxForm">
+    <input type="submit" value="INPUT" class="idxSubmit">
+    <p class="idxLabel">Add an event and mirror it to your Outlook calendar.</p>
+  </form>
+
+  <form action="/search" method="POST" class="idxForm">
+    <input type="submit" value="SEARCH" class="idxSubmit">
+    <p class="idxLabel">Search for an event.</p>
+  </form>
+
+  <form action ="/department" class = "idxForm">
+    <input type="submit" value="DEPARTMENTS" class="idxSubmit">
+    <p class="idxLabel">Display all departments.</p>
+  </form>
+
+  <form action="/logout" class="idxForm">
+    <input type="submit" value="LOGOUT" class="idxSubmit">
+  </form>
+
+  <form action="/updateSubmit" method='POST' class="input">
+    <input name="id" type="hidden" value="{{ id }}">
+
+    <label for="title">Title: </label>
+    <input name="title" type="text" value="{{ title }}">
+
+    <label for="category">Category: </label>
+    <input type="radio" name="category" value="NON" {{ 'checked' if category == "NON"  }}>Non-University
+    <input type="radio" name="category" value="UA" {{ 'checked' if category == "UA"  }}>University
+    <input type="radio" name="category"  value="CAMP" {{ 'checked' if category == "CAMP"  }}>Camp
+    <input type="radio" name="category" value="ZIPS" {{ 'checked' if category == "ZIPS"  }}>Zips
+    <input type="radio" name="category"  value="MAC" {{ 'checked' if category == "MAC"  }}>MAC Challenge<br><br>
+
+    <label for="hours">Hours: </label>
+    <input name="hours" type="text" value="{{ hours }}">
+
+    <label for="date">Date: </label>
+    <input name="date" type="text" value="{{ date }}">
+
+    <label for="facility">Facility: </label>
+    <input name="facility" type="text" value="{{ facility }}">
+
+    <label for="area">Area: </label>
+    <input name="area" type="text" value="{{ area }}">
+
+    <label for="overhead">Overhead: </label>
+    <input name="overhead" type="text" value="{{ overhead }}">
+
+    <label for="fee">Rental Fee: </label>
+    <input name="fee" type="text" value="{{ fee }}">
+
+    <input type="submit">
+  </form>
+
+  <footer>
+    University of Akron Athletics Events ~ Andrew Santa ~ ads227@uakron.edu
+  </footer>
+
 </html>

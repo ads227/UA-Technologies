@@ -1,17 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+
+  <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <title>Log-in required</title>
-</head>
-<header>
-  University of Akron Athletics Events
-</header>
-<body>
-  <p id="error">
-    You must log in to access this resource.
-  </p>
-  <a href='{{ auth_url }}' id="signin">Sign In With your Microsoft Account</a>
-</body>
+  </head>
+
+  <header>
+    University of Akron Athletics Events
+  </header>
+
+  <body>
+    <p id="error">
+      You must log in to access this resource.
+    </p>
+    <a href='{{ auth_url }}' id="signin">Sign In With your Microsoft Account</a>
+  </body>
+
+  <footer>
+    University of Akron Athletics Events ~ Andrew Santa ~ ads227@uakron.edu
+  </footer>
+
 </html>

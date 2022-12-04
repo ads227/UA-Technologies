@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <title>Event Search</title>
   </head>
+
   <header>
     University of Akron Athletics Events
   </header>
@@ -28,13 +29,24 @@
     <p class="idxLabel">Search for an event.</p>
   </form>
 
+  <form action ="/department" class = "idxForm">
+    <input type="submit" value="DEPARTMENTS" class="idxSubmit">
+    <p class="idxLabel">Display all departments.</p>
+  </form>
+
   <form action="/logout" class="idxForm">
     <input type="submit" value="LOGOUT" class="idxSubmit">
   </form>
+
   <form action="/searchresult" method = 'POST' class="input" id="search">
     <label for="search"> Search for an event. </label><br><br>
     <label for="title"> Title: </label>
       <input name="title" type="text" ><br><br>
       <input type="submit">
   </form>
+
+  <footer>
+    University of Akron Athletics Events ~ Andrew Santa ~ ads227@uakron.edu
+  </footer>
+
 </html>
